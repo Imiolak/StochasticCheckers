@@ -1,27 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Checkers.Engine.Display
 {
-    public class Board
+    public class Board : IBoard
     {
-        public Board()
-        {
-            InitializeBoard();
-        }
-
         public int BoardSize => 8;
 
-        public Piece[][] Pieces { get; private set; }
+        public IPiece[][] Pieces { get; private set; }
 
         public bool EndGameConditionsMet => !GetPiecesForPlayer(PlayerColor.Black).Any() || 
             !GetPiecesForPlayer(PlayerColor.White).Any();
-        
-        public IEnumerable<Piece> GetPiecesForPlayer(PlayerColor playerColor)
+
+        public void Initialize()
         {
-            var pieces = new List<Piece>();
+            Pieces = InitializeBoard();
+        }
+        
+        public IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor)
+        {
+            var pieces = new List<IPiece>();
             
             for (var i = 0; i < BoardSize; i++)
             {
@@ -35,12 +34,12 @@ namespace Checkers.Engine.Display
             return pieces.AsEnumerable();
         }
 
-        public IEnumerable<Piece> GetJumpablePiecesForPlayer(PlayerColor color)
+        public IEnumerable<IPiece> GetJumpablePiecesForPlayer(PlayerColor color)
         {
             return GetPiecesForPlayer(color).Where(CanPerformJump);
         }
         
-        public IEnumerable<Piece> GetMovablePiecesForPlayer(PlayerColor color)
+        public IEnumerable<IPiece> GetMovablePiecesForPlayer(PlayerColor color)
         {
             return GetPiecesForPlayer(color).Where(CanPerformMove);
         }
@@ -50,19 +49,19 @@ namespace Checkers.Engine.Display
             return GetBoardStringRepresentation();
         }
         
-        private bool CanPerformJump(Piece piece)
+        private bool CanPerformJump(IPiece piece)
         {
             var otherPieces = OtherPlayersPiecesNear(piece);
             return otherPieces.Any(o => CanJumpOver(piece, o));
         }
         
-        private IEnumerable<Piece> OtherPlayersPiecesNear(Piece piece)
+        private IEnumerable<IPiece> OtherPlayersPiecesNear(IPiece piece)
         {
             var row = piece.Row;
             var column = piece.Column;
             var color = piece.Color;
 
-            var otherPieces = new List<Piece>();
+            var otherPieces = new List<IPiece>();
 
             var pRow = row + 1;
             var pColumn = column + 1;
@@ -94,7 +93,7 @@ namespace Checkers.Engine.Display
                 Pieces[pRow][pColumn].Color != color;
         }
 
-        private bool CanJumpOver(Piece piece, Piece other)
+        private bool CanJumpOver(IPiece piece, IPiece other)
         {
             var row = (other.Row - piece.Row)*2 + piece.Row;
             var column = (other.Column - piece.Column)*2 + piece.Column;
@@ -102,7 +101,7 @@ namespace Checkers.Engine.Display
             return BoardHelper.CheckRowColumnConstraints(row, column, BoardSize) && Pieces[row][column] == null;
         }
 
-        private bool CanPerformMove(Piece piece)
+        private bool CanPerformMove(IPiece piece)
         {
             var row = piece.Row;
             var column = piece.Column;
@@ -135,37 +134,39 @@ namespace Checkers.Engine.Display
             return BoardHelper.CheckRowColumnConstraints(pRow, pColumn, BoardSize) && Pieces[pRow][pColumn] == null;
         }
         
-        private void InitializeBoard()
+        private IPiece[][] InitializeBoard()
         {
-            Pieces = new Piece[BoardSize][];
-            for (var i = 0; i < BoardSize; i++) { 
-                Pieces[i] = new Piece[BoardSize];
+            var pieces = new IPiece[BoardSize][];
+            for (var i = 0; i < BoardSize; i++) {
+                pieces[i] = new IPiece[BoardSize];
             }
 
-            Pieces[0][0] = new Piece(PlayerColor.White, 0, 0);
-            Pieces[0][2] = new Piece(PlayerColor.White, 0, 2);
-            Pieces[0][4] = new Piece(PlayerColor.White, 0, 4);
-            Pieces[0][6] = new Piece(PlayerColor.White, 0, 6);
-            Pieces[1][1] = new Piece(PlayerColor.White, 1, 1);
-            Pieces[1][3] = new Piece(PlayerColor.White, 1, 3);
-            Pieces[1][5] = new Piece(PlayerColor.White, 1, 5);
-            Pieces[1][7] = new Piece(PlayerColor.White, 1, 7);
-            Pieces[2][0] = new Piece(PlayerColor.White, 2, 0);
-            Pieces[2][2] = new Piece(PlayerColor.White, 2, 2);
-            Pieces[2][4] = new Piece(PlayerColor.White, 2, 4);
-            Pieces[2][6] = new Piece(PlayerColor.White, 2, 6);
-            Pieces[7][1] = new Piece(PlayerColor.Black, 7, 1);
-            Pieces[7][3] = new Piece(PlayerColor.Black, 7, 3);
-            Pieces[7][5] = new Piece(PlayerColor.Black, 7, 5);
-            Pieces[7][7] = new Piece(PlayerColor.Black, 7, 7);
-            Pieces[6][0] = new Piece(PlayerColor.Black, 6, 0);
-            Pieces[6][2] = new Piece(PlayerColor.Black, 6, 2);
-            Pieces[6][4] = new Piece(PlayerColor.Black, 6, 4);
-            Pieces[6][6] = new Piece(PlayerColor.Black, 6, 6);
-            Pieces[5][1] = new Piece(PlayerColor.Black, 5, 1);
-            Pieces[5][3] = new Piece(PlayerColor.Black, 5, 3);
-            Pieces[5][5] = new Piece(PlayerColor.Black, 5, 5);
-            Pieces[5][7] = new Piece(PlayerColor.Black, 5, 7);
+            pieces[0][0] = new Piece(PlayerColor.White, 0, 0);
+            pieces[0][2] = new Piece(PlayerColor.White, 0, 2);
+            pieces[0][4] = new Piece(PlayerColor.White, 0, 4);
+            pieces[0][6] = new Piece(PlayerColor.White, 0, 6);
+            pieces[1][1] = new Piece(PlayerColor.White, 1, 1);
+            pieces[1][3] = new Piece(PlayerColor.White, 1, 3);
+            pieces[1][5] = new Piece(PlayerColor.White, 1, 5);
+            pieces[1][7] = new Piece(PlayerColor.White, 1, 7);
+            pieces[2][0] = new Piece(PlayerColor.White, 2, 0);
+            pieces[2][2] = new Piece(PlayerColor.White, 2, 2);
+            pieces[2][4] = new Piece(PlayerColor.White, 2, 4);
+            pieces[2][6] = new Piece(PlayerColor.White, 2, 6);
+            pieces[7][1] = new Piece(PlayerColor.Black, 7, 1);
+            pieces[7][3] = new Piece(PlayerColor.Black, 7, 3);
+            pieces[7][5] = new Piece(PlayerColor.Black, 7, 5);
+            pieces[7][7] = new Piece(PlayerColor.Black, 7, 7);
+            pieces[6][0] = new Piece(PlayerColor.Black, 6, 0);
+            pieces[6][2] = new Piece(PlayerColor.Black, 6, 2);
+            pieces[6][4] = new Piece(PlayerColor.Black, 6, 4);
+            pieces[6][6] = new Piece(PlayerColor.Black, 6, 6);
+            pieces[5][1] = new Piece(PlayerColor.Black, 5, 1);
+            pieces[5][3] = new Piece(PlayerColor.Black, 5, 3);
+            pieces[5][5] = new Piece(PlayerColor.Black, 5, 5);
+            pieces[5][7] = new Piece(PlayerColor.Black, 5, 7);
+
+            return pieces;
         }
 
         private string GetBoardStringRepresentation()

@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RandomMoveAlgorithmPlayer.cs" />
+    <Compile Include="MTCSPlayer.cs" />
+    <Compile Include="RandomMovePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,9 @@
       <Project>{FC3D2BF8-CC79-4D6F-BDEE-C3DB1EA837D3}</Project>
       <Name>Checkers.Engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MTCS\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

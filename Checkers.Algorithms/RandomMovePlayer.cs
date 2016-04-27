@@ -5,7 +5,7 @@ using Checkers.Engine.Extensions;
 
 namespace Checkers.Algorithms
 {
-    public class RandomMoveAlgorithmPlayer : IPlayer
+    public class RandomMovePlayer : IPlayer
     {
         public PlayerColor Color { get; set; }
 
@@ -19,7 +19,7 @@ namespace Checkers.Algorithms
                 var chosenPiece = pieceArray.Random();
                 var chosenJump = chosenPiece.GetPossibleJumps(board).Random();
 
-                chosenJump.Perform(chosenPiece, board);
+                chosenJump.Perform(board);
 
                 wasJump = true;
                 return;
@@ -33,7 +33,7 @@ namespace Checkers.Algorithms
                 var chosenPiece = pieceArray.Random();
                 var chosenMove = chosenPiece.GetPossibleMoves(board).Random();
 
-                chosenMove.Perform(chosenPiece, board);
+                chosenMove.Perform(board);
             }
 
             wasJump = false;

@@ -4,7 +4,7 @@ using Checkers.Engine.Actions;
 
 namespace Checkers.Engine.Display
 {
-    public class Piece
+    public class Piece : IPiece
     {
         public Piece(PlayerColor color, int row, int column)
         {
@@ -26,22 +26,22 @@ namespace Checkers.Engine.Display
             var dRow = 1;
             var dColumn = 1;
             if (IsMovePossible(Row, Column, dRow, dColumn, board))
-                moves.Add(new MoveAction(dRow, dColumn));
+                moves.Add(new MoveAction(this, dRow, dColumn));
 
             dRow = 1;
             dColumn = -1;
             if (IsMovePossible(Row, Column, dRow, dColumn, board))
-                moves.Add(new MoveAction(dRow, dColumn));
+                moves.Add(new MoveAction(this, dRow, dColumn));
 
             dRow = -1;
             dColumn = -1;
             if (IsMovePossible(Row, Column, dRow, dColumn, board))
-                moves.Add(new MoveAction(dRow, dColumn));
+                moves.Add(new MoveAction(this, dRow, dColumn));
 
             dRow = -1;
             dColumn = 1;
             if (IsMovePossible(Row, Column, dRow, dColumn, board))
-                moves.Add(new MoveAction(dRow, dColumn));
+                moves.Add(new MoveAction(this, dRow, dColumn));
 
             return moves.AsEnumerable();
         }
@@ -56,28 +56,28 @@ namespace Checkers.Engine.Display
             var intRow = 1;
             var intColumn = 1;
             if (IsJumpPossible(Row, Column, dRow, dColumn, intRow, intColumn, board))
-                jumps.Add(new JumpAction(dRow, dColumn));
+                jumps.Add(new JumpAction(this, dRow, dColumn));
 
             dRow = 2;
             dColumn = -2;
             intRow = 1;
             intColumn = -1;
             if (IsJumpPossible(Row, Column, dRow, dColumn, intRow, intColumn, board))
-                jumps.Add(new JumpAction(dRow, dColumn));
+                jumps.Add(new JumpAction(this, dRow, dColumn));
 
             dRow = -2;
             dColumn = -2;
             intRow = -1;
             intColumn = -1;
             if (IsJumpPossible(Row, Column, dRow, dColumn, intRow, intColumn, board))
-                jumps.Add(new JumpAction(dRow, dColumn));
+                jumps.Add(new JumpAction(this, dRow, dColumn));
 
             dRow = -2;
             dColumn = 2;
             intRow = -1;
             intColumn = 1;
             if (IsJumpPossible(Row, Column, dRow, dColumn, intRow, intColumn, board))
-                jumps.Add(new JumpAction(dRow, dColumn));
+                jumps.Add(new JumpAction(this, dRow, dColumn));
 
             return jumps.AsEnumerable();
         }

@@ -8,8 +8,8 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            var player1 = new RandomMoveAlgorithmPlayer();
-            var player2 = new RandomMoveAlgorithmPlayer();
+            var player1 = new RandomMovePlayer();
+            var player2 = new RandomMovePlayer();
 
             var game = new CheckersGame(player1, player2);
 

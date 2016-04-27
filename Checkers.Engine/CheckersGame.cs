@@ -24,6 +24,8 @@ namespace Checkers.Engine
 
         public void Start(bool debug = false)
         {
+            _board.Initialize();
+
             while (true)
             {
                 if (_board.EndGameConditionsMet)

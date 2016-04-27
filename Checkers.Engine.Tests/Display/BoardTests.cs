@@ -8,9 +8,10 @@ namespace Checkers.Engine.Tests.Display
     public class BoardTests
     {
         [Fact]
-        public void NewlyCreatedBoardWithSize8ShouldHave24Pieces12White12Black()
+        public void NewlyInitializedBoardWithSize8ShouldHave12White12BlackPieces()
         {
             var board = new Board();
+            board.Initialize();
             
             var whitePieces = board.GetPiecesForPlayer(PlayerColor.White);
             var blackPieces = board.GetPiecesForPlayer(PlayerColor.Black);

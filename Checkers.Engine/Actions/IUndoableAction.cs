@@ -2,8 +2,8 @@
 
 namespace Checkers.Engine.Actions
 {
-    public interface IAction
+    public interface IUndoableAction
     {
-        void Perform(IBoard board);
+        void Undo(IBoard board);
     }
 }

@@ -3,37 +3,55 @@ using Checkers.Engine.Exceptions;
 
 namespace Checkers.Engine.Actions
 {
-    public class JumpAction : ActionBase, IAction
+    public class JumpAction : ActionBase, IAction, IUndoableAction
     {
-        public JumpAction(int deltaRow, int deltaColumn) : base(deltaRow, deltaColumn)
+        private IPiece _beatenPiece;
+
+        public JumpAction(IPiece piece, int deltaRow, int deltaColumn) : base(piece, deltaRow, deltaColumn)
         {
         }
 
-        public void Perform(Piece piece, Board board)
+        public void Perform(IBoard board)
         {
             if (DeltaRow != 2 && DeltaRow != -2)
-                throw new ActionNotAllowedException("Delta row must be eiter 2 or -2.");
+                throw new DeltaRowOutOfBoundsException("Delta row must be eiter 2 or -2.");
             if (DeltaColumn != 2 && DeltaColumn != -2)
-                throw new ActionNotAllowedException("Delta column must be eiter 2 or -2.");
+                throw new DeltaColumnOutOfBoundsException("Delta column must be eiter 2 or -2.");
 
-            var destRow = piece.Row + DeltaRow;
-            var destCol = piece.Column + DeltaColumn;
+            var destRow = Piece.Row + DeltaRow;
+            var destCol = Piece.Column + DeltaColumn;
 
-            var intRow = DeltaRow/2 + piece.Row;
-            var intColumn = DeltaColumn/2 + piece.Column;
+            var intRow = DeltaRow/2 + Piece.Row;
+            var intColumn = DeltaColumn/2 + Piece.Column;
             
             if (board.Pieces[destRow][destCol] != null)
-                throw new ActionNotAllowedException("Destination cell is already occupied.");
+                throw new DestinationCellOccupiedException();
             if (board.Pieces[intRow][intColumn] == null)
-                throw new ActionNotAllowedException("There should be a piece between the destination and the jumping piece.");
-            if (board.Pieces[intRow][intColumn].Color == piece.Color)
-                throw new ActionNotAllowedException("The piece you want to jump over should be your oponents.");
-            
-            board.Pieces[piece.Row][piece.Column] = null;
+                throw new NoPieceToJumpOverException();
+            if (board.Pieces[intRow][intColumn].Color == Piece.Color)
+                throw new JumpOverOwnPieceException();
+
+            _beatenPiece = board.Pieces[intRow][intColumn];
+            board.Pieces[Piece.Row][Piece.Column] = null;
             board.Pieces[intRow][intColumn] = null;
-            board.Pieces[destRow][destCol] = piece;
-            piece.Row = destRow;
-            piece.Column = destCol;
+            board.Pieces[destRow][destCol] = Piece;
+            Piece.Row = destRow;
+            Piece.Column = destCol;
+        }
+
+        public void Undo(IBoard board)
+        {
+            var destRow = Piece.Row - DeltaRow;
+            var destCol = Piece.Column - DeltaColumn;
+
+            var intRow = DeltaRow / 2 + Piece.Row;
+            var intColumn = DeltaColumn / 2 + Piece.Column;
+            
+            board.Pieces[Piece.Row][Piece.Column] = null;
+            board.Pieces[intRow][intColumn] = _beatenPiece;
+            board.Pieces[destRow][destCol] = Piece;
+            Piece.Row = destRow;
+            Piece.Column = destCol;
         }
     }
 }

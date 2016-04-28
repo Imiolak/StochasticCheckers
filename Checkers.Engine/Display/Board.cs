@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Checkers.Engine.Actions;
+using Checkers.Engine.Extensions;
 
 namespace Checkers.Engine.Display
 {
@@ -17,7 +19,12 @@ namespace Checkers.Engine.Display
         {
             Pieces = InitializeBoard();
         }
-        
+
+        public PlayerColor NextPlayer()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor)
         {
             var pieces = new List<IPiece>();
@@ -34,20 +41,40 @@ namespace Checkers.Engine.Display
             return pieces.AsEnumerable();
         }
 
-        public IEnumerable<IPiece> GetJumpablePiecesForPlayer(PlayerColor color)
+        public IEnumerable<IAction> GetValidActionsForPlayer(PlayerColor playerColor)
         {
-            return GetPiecesForPlayer(color).Where(CanPerformJump);
-        }
-        
-        public IEnumerable<IPiece> GetMovablePiecesForPlayer(PlayerColor color)
-        {
-            return GetPiecesForPlayer(color).Where(CanPerformMove);
+            var pieces = GetJumpablePiecesForPlayer(playerColor);
+
+            var pieceArray = pieces as Piece[] ?? pieces.ToArray();
+            if (pieceArray.Any())
+                return pieceArray.SelectMany(piece => piece.GetPossibleJumps(this));
+
+            pieces = GetMovablePiecesForPlayer(playerColor);
+
+            pieceArray = pieces as Piece[] ?? pieces.ToArray();
+            if (pieceArray.Any())
+            {
+                return pieceArray.SelectMany(piece => piece.GetPossibleMoves(this));
+            }
+
+            return Enumerable.Empty<IAction>();
         }
 
         public override string ToString()
         {
             return GetBoardStringRepresentation();
         }
+
+        private IEnumerable<IPiece> GetJumpablePiecesForPlayer(PlayerColor color)
+        {
+            return GetPiecesForPlayer(color).Where(CanPerformJump);
+        }
+
+        private IEnumerable<IPiece> GetMovablePiecesForPlayer(PlayerColor color)
+        {
+            return GetPiecesForPlayer(color).Where(CanPerformMove);
+        }
+
         
         private bool CanPerformJump(IPiece piece)
         {

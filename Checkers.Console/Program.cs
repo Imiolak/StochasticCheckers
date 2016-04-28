@@ -1,5 +1,6 @@
 ﻿using System.Management.Instrumentation;
 using Checkers.Algorithms;
+using Checkers.Algorithms.MTCS.Strategy;
 using Checkers.Engine;
 
 namespace Checkers.Console
@@ -8,12 +9,12 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            var player1 = new RandomMovePlayer();
+            var player1 = new MTCSPlayer(new RandomSelectionStrategy());
             var player2 = new RandomMovePlayer();
 
             var game = new CheckersGame(player1, player2);
 
-            game.Start();
+            game.Start(true);
         }
     }
 }

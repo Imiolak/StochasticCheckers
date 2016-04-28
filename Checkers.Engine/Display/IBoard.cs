@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Checkers.Engine.Actions;
 
 namespace Checkers.Engine.Display
 {
@@ -8,8 +9,8 @@ namespace Checkers.Engine.Display
         bool EndGameConditionsMet { get; }
         IPiece[][] Pieces { get; }
 
-        IEnumerable<IPiece> GetJumpablePiecesForPlayer(PlayerColor color);
-        IEnumerable<IPiece> GetMovablePiecesForPlayer(PlayerColor color);
+        PlayerColor NextPlayer();
         IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor);
+        IEnumerable<IAction> GetValidActionsForPlayer(PlayerColor playerColor);
     }
 }

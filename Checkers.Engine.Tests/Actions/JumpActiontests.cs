@@ -112,5 +112,11 @@ namespace Checkers.Engine.Tests.Actions
 
             perform.ShouldThrow<DeltaColumnOutOfBoundsException>();
         }
+
+        [Fact]
+        public void UndoTest()
+        {
+            
+        }
     }
 }

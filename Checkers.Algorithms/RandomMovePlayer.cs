@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Checkers.Engine;
+using Checkers.Engine.Actions;
 using Checkers.Engine.Display;
 using Checkers.Engine.Extensions;
 
@@ -11,32 +12,18 @@ namespace Checkers.Algorithms
 
         public void PerformMove(Board board, out bool wasJump)
         {
-            var pieces = board.GetJumpablePiecesForPlayer(Color);
+            var actions = board.GetValidActionsForPlayer(Color);
 
-            var pieceArray = pieces as Piece[] ?? pieces.ToArray();
-            if (pieceArray.Any())
+            var pieceArray = actions as IAction[] ?? actions.ToArray();
+            if (!pieceArray.Any())
             {
-                var chosenPiece = pieceArray.Random();
-                var chosenJump = chosenPiece.GetPossibleJumps(board).Random();
-
-                chosenJump.Perform(board);
-
-                wasJump = true;
+                wasJump = false;
                 return;
             }
 
-            pieces = board.GetMovablePiecesForPlayer(Color);
-
-            pieceArray = pieces as Piece[] ?? pieces.ToArray();
-            if (pieceArray.Any())
-            {
-                var chosenPiece = pieceArray.Random();
-                var chosenMove = chosenPiece.GetPossibleMoves(board).Random();
-
-                chosenMove.Perform(board);
-            }
-
-            wasJump = false;
+            var action = pieceArray.Random();
+            action.Perform(board);
+            wasJump = action is JumpAction;
         }
     }
 }

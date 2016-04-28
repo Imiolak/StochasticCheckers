@@ -6,11 +6,12 @@ namespace Checkers.Engine.Extensions
 {
     public static class EnumerableExtensions
     {
+        private static readonly Random Rand = new Random();
+
         public static T Random<T>(this IEnumerable<T> set)
         {
-            var rand = new Random();
             var array = set as T[] ?? set.ToArray();
-            var theOne = rand.Next(array.Length);
+            var theOne = Rand.Next(array.Length);
 
             return array[theOne];
         }

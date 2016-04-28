@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{06DA9F1B-F926-4A62-84B5-04EC98F230F0}</ProjectGuid>
+    <ProjectGuid>{702DBE14-339C-4E48-AD93-B380A878B717}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Checkers.Algorithms</RootNamespace>
-    <AssemblyName>Checkers.Algorithms</AssemblyName>
+    <RootNamespace>Checkers.Algorithms.Tests</RootNamespace>
+    <AssemblyName>Checkers.Algorithms.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,12 +24,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,21 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MTCSPlayer.cs" />
-    <Compile Include="MTCS\MTCSNode.cs" />
-    <Compile Include="MTCS\MTCSTree.cs" />
-    <Compile Include="MTCS\Strategy\ISelectionStrategy.cs" />
-    <Compile Include="MTCS\Strategy\RandomSelectionStrategy.cs" />
-    <Compile Include="RandomMovePlayer.cs" />
+    <Compile Include="MTCS\MTCSNodeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Checkers.Engine\Checkers.Engine.csproj">
-      <Project>{FC3D2BF8-CC79-4D6F-BDEE-C3DB1EA837D3}</Project>
-      <Name>Checkers.Engine</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

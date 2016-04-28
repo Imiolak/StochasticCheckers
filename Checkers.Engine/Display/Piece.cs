@@ -12,7 +12,7 @@ namespace Checkers.Engine.Display
             Row = row;
             Column = column;
         }
-
+        
         public PlayerColor Color { get; }
 
         public int Row { get; set; }
@@ -96,5 +96,31 @@ namespace Checkers.Engine.Display
                    board.Pieces[row + intRow][column + intColumn].Color != Color &&
                    board.Pieces[row + dRow][column + dColumn] == null;
         }
+
+        #region Equality comparers
+        protected bool Equals(Piece other)
+        {
+            return Color == other.Color && Row == other.Row && Column == other.Column;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Piece)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int)Color;
+                hashCode = (hashCode * 397) ^ Row;
+                hashCode = (hashCode * 397) ^ Column;
+                return hashCode;
+            }
+        }
+        #endregion
     }
 }

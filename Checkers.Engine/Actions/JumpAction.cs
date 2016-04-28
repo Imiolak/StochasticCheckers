@@ -3,10 +3,11 @@ using Checkers.Engine.Exceptions;
 
 namespace Checkers.Engine.Actions
 {
-    public class JumpAction : ActionBase, IAction, IUndoableAction
+    public class JumpAction : ActionBase, IAction
     {
+        private bool _wasPerformed;
         private IPiece _beatenPiece;
-
+        
         public JumpAction(IPiece piece, int deltaRow, int deltaColumn) : base(piece, deltaRow, deltaColumn)
         {
         }
@@ -37,10 +38,15 @@ namespace Checkers.Engine.Actions
             board.Pieces[destRow][destCol] = Piece;
             Piece.Row = destRow;
             Piece.Column = destCol;
+
+            _wasPerformed = true;
         }
 
         public void Undo(IBoard board)
         {
+            if (!_wasPerformed)
+                throw new CantUndoNotPerformAction();
+
             var destRow = Piece.Row - DeltaRow;
             var destCol = Piece.Column - DeltaColumn;
 

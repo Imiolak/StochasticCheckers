@@ -68,10 +68,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\JumpActiontests.cs" />
+    <Compile Include="Actions\JumpActionTests.cs" />
     <Compile Include="Actions\MoveActionTests.cs" />
     <Compile Include="CheckersGameTests.cs" />
     <Compile Include="Display\BoardTests.cs" />
+    <Compile Include="Display\PieceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

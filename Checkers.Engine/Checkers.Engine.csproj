@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ActionBase.cs" />
-    <Compile Include="Actions\IUndoableAction.cs" />
     <Compile Include="Actions\JumpAction.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="CheckersGame.cs" />
@@ -66,6 +65,7 @@
     <Compile Include="Display\IBoard.cs" />
     <Compile Include="Display\IPiece.cs" />
     <Compile Include="Display\Piece.cs" />
+    <Compile Include="Exceptions\CantUndoNotPerformAction.cs" />
     <Compile Include="Exceptions\DeltaColumnOutOfBoundsException.cs" />
     <Compile Include="Exceptions\DeltaRowOutOfBoundsException.cs" />
     <Compile Include="Exceptions\DestinationCellOccupiedException.cs" />
@@ -74,6 +74,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="IPlayer.cs" />
+    <Compile Include="PlayerUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

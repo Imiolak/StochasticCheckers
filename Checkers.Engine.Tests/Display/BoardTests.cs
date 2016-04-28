@@ -20,5 +20,7 @@ namespace Checkers.Engine.Tests.Display
             whitePieces.Count().Should().Be(12);
             blackPieces.Count().Should().Be(12);
         }
+
+        
     }
 }

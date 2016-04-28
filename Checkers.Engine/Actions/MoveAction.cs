@@ -3,7 +3,7 @@ using Checkers.Engine.Exceptions;
 
 namespace Checkers.Engine.Actions
 {
-    public class MoveAction : ActionBase, IAction, IUndoableAction
+    public class MoveAction : ActionBase, IAction
     {
         public MoveAction(IPiece piece, int deltaRow, int deltaColumn) : base(piece, deltaRow, deltaColumn)
         {

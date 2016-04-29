@@ -18,11 +18,10 @@ namespace Checkers.Algorithms
 
         public PlayerColor Color { get; set; }
 
-        public void PerformMove(Board board, out bool wasJump)
+        public void PerformMove(Board board)
         {
             var action = _mtcsTree.GetBestPossibleAction(board);
             action.Perform(board);
-            wasJump = action is JumpAction;
         }
     }
 }

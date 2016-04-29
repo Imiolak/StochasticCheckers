@@ -8,8 +8,10 @@ namespace Checkers.Engine.Display
         int BoardSize { get; }
         bool EndGameConditionsMet { get; }
         IPiece[][] Pieces { get; }
+        PlayerColor LastPlayer { get; set; }
+        PlayerColor NextPlayer { get; }
+        bool WasLastActionJump { get; set; }
 
-        PlayerColor NextPlayer();
         IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor);
         IEnumerable<IAction> GetValidActionsForPlayer(PlayerColor playerColor);
     }

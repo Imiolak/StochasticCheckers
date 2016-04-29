@@ -6,8 +6,11 @@ namespace Checkers.Engine.Actions
     public class JumpAction : ActionBase, IAction
     {
         private bool _wasPerformed;
+
         private IPiece _beatenPiece;
-        
+        private PlayerColor _previousPlayer;
+        private bool _wasPreviousActionJump;
+
         public JumpAction(IPiece piece, int deltaRow, int deltaColumn) : base(piece, deltaRow, deltaColumn)
         {
         }
@@ -31,14 +34,19 @@ namespace Checkers.Engine.Actions
                 throw new NoPieceToJumpOverException();
             if (board.Pieces[intRow][intColumn].Color == Piece.Color)
                 throw new JumpOverOwnPieceException();
-
+            
             _beatenPiece = board.Pieces[intRow][intColumn];
+            _previousPlayer = board.LastPlayer;
+            _wasPreviousActionJump = board.WasLastActionJump;
+            
             board.Pieces[Piece.Row][Piece.Column] = null;
             board.Pieces[intRow][intColumn] = null;
             board.Pieces[destRow][destCol] = Piece;
             Piece.Row = destRow;
             Piece.Column = destCol;
 
+            board.LastPlayer = Piece.Color;
+            board.WasLastActionJump = true;
             _wasPerformed = true;
         }
 
@@ -54,10 +62,13 @@ namespace Checkers.Engine.Actions
             var intColumn = DeltaColumn / 2 + Piece.Column;
             
             board.Pieces[Piece.Row][Piece.Column] = null;
-            board.Pieces[intRow][intColumn] = _beatenPiece;
             board.Pieces[destRow][destCol] = Piece;
             Piece.Row = destRow;
             Piece.Column = destCol;
+
+            board.Pieces[intRow][intColumn] = _beatenPiece;
+            board.LastPlayer = _previousPlayer;
+            board.WasLastActionJump = _wasPreviousActionJump;
         }
     }
 }

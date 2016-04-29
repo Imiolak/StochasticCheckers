@@ -7,7 +7,7 @@ namespace Checkers.Algorithms.MTCS
 {
     public class MTCSTree
     {
-        private const int Budget = 10;
+        private const int Budget = 1;
 
         private readonly PlayerColor _playerColor;
         private readonly ISelectionStrategy _selectionStrategy;

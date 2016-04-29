@@ -6,7 +6,7 @@ namespace Checkers.Engine
     {
         PlayerColor Color{ get; set; }
 
-        void PerformMove(Board board, out bool wasJump);
+        void PerformMove(Board board);
     }
 
     public enum PlayerColor

@@ -5,6 +5,9 @@ namespace Checkers.Engine.Actions
 {
     public class MoveAction : ActionBase, IAction
     {
+        private PlayerColor _previousPlayer;
+        private bool _wasPreviousActionJump;
+
         public MoveAction(IPiece piece, int deltaRow, int deltaColumn) : base(piece, deltaRow, deltaColumn)
         {
         }
@@ -22,10 +25,16 @@ namespace Checkers.Engine.Actions
             if (board.Pieces[destRow][destCol] != null)
                 throw new DestinationCellOccupiedException();
 
+            _previousPlayer = board.LastPlayer;
+            _wasPreviousActionJump = board.WasLastActionJump;
+
             board.Pieces[Piece.Row][Piece.Column] = null;
             board.Pieces[destRow][destCol] = Piece;
             Piece.Row = destRow;
             Piece.Column = destCol;
+
+            board.LastPlayer = Piece.Color;
+            board.WasLastActionJump = false;
         }
 
         public void Undo(IBoard board)
@@ -37,6 +46,9 @@ namespace Checkers.Engine.Actions
             board.Pieces[destRow][destCol] = Piece;
             Piece.Row = destRow;
             Piece.Column = destCol;
+
+            board.LastPlayer = _previousPlayer;
+            board.WasLastActionJump = _wasPreviousActionJump;
         }
     }
 }

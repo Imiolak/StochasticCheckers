@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using Checkers.Engine.Actions;
-using Checkers.Engine.Extensions;
 
 namespace Checkers.Engine.Display
 {
@@ -10,19 +9,20 @@ namespace Checkers.Engine.Display
     {
         public int BoardSize => 8;
 
-        public IPiece[][] Pieces { get; private set; }
-
-        public bool EndGameConditionsMet => !GetPiecesForPlayer(PlayerColor.Black).Any() || 
+        public bool EndGameConditionsMet => !GetPiecesForPlayer(PlayerColor.Black).Any() ||
             !GetPiecesForPlayer(PlayerColor.White).Any();
 
+        public IPiece[][] Pieces { get; private set; }
+
+        public PlayerColor LastPlayer { get; set; } = PlayerUtils.StartingPlayer();
+
+        public PlayerColor NextPlayer => WasLastActionJump ? LastPlayer : PlayerUtils.NextPlayer(LastPlayer);
+
+        public bool WasLastActionJump { get; set; } = true;
+        
         public void Initialize()
         {
             Pieces = InitializeBoard();
-        }
-
-        public PlayerColor NextPlayer()
-        {
-            throw new System.NotImplementedException();
         }
 
         public IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor)
@@ -65,6 +65,7 @@ namespace Checkers.Engine.Display
             return GetBoardStringRepresentation();
         }
 
+        #region Private Methods
         private IEnumerable<IPiece> GetJumpablePiecesForPlayer(PlayerColor color)
         {
             return GetPiecesForPlayer(color).Where(CanPerformJump);
@@ -220,5 +221,6 @@ namespace Checkers.Engine.Display
             }
             return sb.ToString();
         }
+        #endregion
     }
 }

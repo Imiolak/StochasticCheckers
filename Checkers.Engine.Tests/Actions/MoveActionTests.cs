@@ -125,5 +125,33 @@ namespace Checkers.Engine.Tests.Actions
             board.Pieces[row][column].Should().BeNull();
             board.Pieces[row - deltaRow][column - deltaColumn].Should().Be(piece);
         }
+
+        [Fact]
+        public void PerformShouldSetLastPlayerAndWasJumpOnBoard()
+        {
+            const int row = 4;
+            const int column = 4;
+            const int deltaRow = 1;
+            const int deltaColumn = 1;
+
+            var piece = Substitute.For<IPiece>();
+            piece.Row.Returns(row);
+            piece.Column.Returns(column);
+            piece.Color.Returns(PlayerColor.White);
+
+            var pieces = new IPiece[8][];
+            for (var i = 0; i < 8; i++)
+                pieces[i] = new IPiece[8];
+            pieces[row][column] = piece;
+
+            var board = Substitute.For<IBoard>();
+            board.Pieces.Returns(pieces);
+
+            var moveAction = new MoveAction(piece, deltaRow, deltaColumn);
+            moveAction.Perform(board);
+
+            board.LastPlayer.Should().Be(piece.Color);
+            board.WasLastActionJump.Should().BeFalse();
+        }
     }
 }

@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 using Checkers.Engine.Display;
 
 namespace Checkers.Engine
 {
     public class CheckersGame
     {
-        private readonly IPlayer _player1;
-        private readonly IPlayer _player2;
-
+        private readonly IDictionary<PlayerColor, IPlayer> _players;
         private readonly Board _board;
 
         public CheckersGame(IPlayer player1, IPlayer player2)
         {
-            _player1 = player1;
-            _player2 = player2;
-
-            _player1.Color = PlayerColor.White;
-            _player2.Color = PlayerColor.Black;
-
+            _players = new Dictionary<PlayerColor, IPlayer>
+            {
+                [PlayerColor.White] = player1,
+                [PlayerColor.Black] = player2
+            };
+            player1.Color = PlayerColor.White;
+            player2.Color = PlayerColor.Black;
+            
             _board = new Board();
         }
 
@@ -26,35 +26,26 @@ namespace Checkers.Engine
         {
             _board.Initialize();
 
-            while (true)
+            while (!_board.EndGameConditionsMet)
             {
-                if (_board.EndGameConditionsMet)
-                    break;
-                DoPlayerMove(_player1, debug);
-                if (_board.EndGameConditionsMet)
-                    break;
-                DoPlayerMove(_player2, debug);
+                var nextPlayer = _players[_board.NextPlayer];
+                Debug(debug, nextPlayer);
+                nextPlayer.PerformMove(_board);
             }
-            VisualizeBoard(_board);
+            VisualizeBoard();
             WaitForPlayerInput();
         }
 
-        private void DoPlayerMove(IPlayer player, bool debug)
+        private void Debug(bool debug, IPlayer player)
         {
-            bool didJump;
-            do
-            {
-                if (debug)
-                {
-                    VisualizeBoard(_board);
-                    EchoNextPlayer(player);
-                    WaitForPlayerInput();
-                }
-                player.PerformMove(_board, out didJump);
-            } while (didJump);
+            if (!debug) return;
+
+            VisualizeBoard();
+            EchoNextPlayer(player);
+            WaitForPlayerInput();
         }
         
-        private void VisualizeBoard(Board board)
+        private void VisualizeBoard()
         {
             Console.WriteLine(_board.ToString());
         }
@@ -67,7 +58,7 @@ namespace Checkers.Engine
 
         private void WaitForPlayerInput()
         {
-            Console.ReadKey();
+            Console.ReadLine();
         }
     }
 }

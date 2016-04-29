@@ -21,6 +21,40 @@ namespace Checkers.Engine.Tests.Display
             blackPieces.Count().Should().Be(12);
         }
 
-        
+        [Fact]
+        public void WhitePlayerShouldBeOneToStart()
+        {
+            var board = new Board();
+
+            board.NextPlayer.Should().Be(PlayerColor.White);
+        }
+
+        [Fact]
+        public void NextPlayerShouldTakeActionAfterPreviousMoved()
+        {
+            const PlayerColor player = PlayerColor.Black;
+
+            var board = new Board
+            {
+                LastPlayer = player,
+                WasLastActionJump = false
+            };
+
+            board.NextPlayer.Should().Be(PlayerUtils.NextPlayer(player));
+        }
+
+        [Fact]
+        public void SamePlayerShouldTakeActionAfterHeJumped()
+        {
+            const PlayerColor player = PlayerColor.Black;
+
+            var board = new Board
+            {
+                LastPlayer = player,
+                WasLastActionJump = true
+            };
+
+            board.NextPlayer.Should().Be(player);
+        }
     }
 }

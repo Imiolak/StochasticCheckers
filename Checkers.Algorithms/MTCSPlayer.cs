@@ -9,9 +9,9 @@ namespace Checkers.Algorithms
     {
         private readonly MTCSTree _mtcsTree;
 
-        public MTCSPlayer(IBudgetAssignStrategy budgetAssignStrategy, IChildSelectionStrategy childSelectionStrategy)
+        public MTCSPlayer(IBudgetAssignStrategy budgetAssignStrategy, IChildSelectionStrategy simulationChildSelectionStrategy, IChildSelectionStrategy bestChildSelectionStrategy)
         {
-            _mtcsTree = new MTCSTree(Color, budgetAssignStrategy, childSelectionStrategy);
+            _mtcsTree = new MTCSTree(Color, budgetAssignStrategy, simulationChildSelectionStrategy, bestChildSelectionStrategy);
         }
 
         public PlayerColor Color { get; set; }

@@ -47,6 +47,7 @@
     <Compile Include="MTCS\Strategy\IChildSelectionStrategy.cs" />
     <Compile Include="MTCS\Strategy\RandomChildSelectionStrategy.cs" />
     <Compile Include="MTCS\Strategy\StaticBudgetAssignStrategy.cs" />
+    <Compile Include="MTCS\Strategy\WinPercentageChildSelectionStrategy.cs" />
     <Compile Include="RandomMovePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

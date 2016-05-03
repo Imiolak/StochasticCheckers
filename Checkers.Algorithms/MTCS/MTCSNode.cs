@@ -35,7 +35,7 @@ namespace Checkers.Algorithms.MTCS
 
         public double WinPercentage => (double) WinCount/PlayCount;
 
-        public MTCSNode GetBestPossibleChild(IBoard board, PlayerColor activePlayer, int budget, IChildSelectionStrategy childSelectionStrategy)
+        public MTCSNode GetBestPossibleChild(IBoard board, PlayerColor activePlayer, int budget, IChildSelectionStrategy childSelectionStrategy, IChildSelectionStrategy bestChildSelectionStrategy)
         {
             _children.Clear();
             PopulateChildren(board, activePlayer);
@@ -46,9 +46,7 @@ namespace Checkers.Algorithms.MTCS
                 child.RunSimulation(board, activePlayer);
             }
 
-            var bestChild = GetBestChild();
-
-            return bestChild;
+            return bestChildSelectionStrategy.Select(_children);
         }
 
         private void PopulateChildren(IBoard board, PlayerColor activePlayer)

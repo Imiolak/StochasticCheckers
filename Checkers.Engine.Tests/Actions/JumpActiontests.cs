@@ -146,5 +146,43 @@ namespace Checkers.Engine.Tests.Actions
             board.LastPlayer.Should().Be(piece.Color);
             board.WasLastActionJump.Should().BeTrue();
         }
+
+        [Fact]
+        public void UndoTest()
+        {
+            const int row = 4;
+            const int column = 4;
+            const int intRow = row + 1;
+            const int intColumn = column - 1;
+            const int deltaRow = 2;
+            const int deltaColumn = -2;
+
+            var piece = Substitute.For<IPiece>();
+            piece.Row.Returns(row);
+            piece.Column.Returns(column);
+            piece.Color.Returns(PlayerColor.Black);
+
+            var beatenPiece = Substitute.For<IPiece>();
+            beatenPiece.Color.Returns(PlayerColor.White);
+
+            var pieces = new IPiece[8][];
+            for (var i = 0; i < 8; i++)
+                pieces[i] = new IPiece[8];
+            pieces[row][column] = piece;
+            pieces[intRow][intColumn] = beatenPiece;
+
+            var board = Substitute.For<IBoard>();
+            board.Pieces.Returns(pieces);
+
+            var jumpAction = new JumpAction(piece, deltaRow, deltaColumn);
+            jumpAction.Perform(board);
+            jumpAction.Undo(board);
+
+            piece.Row.Should().Be(row);
+            piece.Column.Should().Be(column);
+            board.Pieces[row][column].Should().Be(piece);
+            board.Pieces[intRow][intColumn].Should().Be(beatenPiece);
+            board.Pieces[row + deltaRow][column + deltaColumn].Should().BeNull();
+        }
     }
 }

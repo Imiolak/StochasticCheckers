@@ -65,7 +65,7 @@
     <Compile Include="Display\IBoard.cs" />
     <Compile Include="Display\IPiece.cs" />
     <Compile Include="Display\Piece.cs" />
-    <Compile Include="Exceptions\CantUndoNotPerformAction.cs" />
+    <Compile Include="Exceptions\CantUndoNotPerformedAction.cs" />
     <Compile Include="Exceptions\DeltaColumnOutOfBoundsException.cs" />
     <Compile Include="Exceptions\DeltaRowOutOfBoundsException.cs" />
     <Compile Include="Exceptions\DestinationCellOccupiedException.cs" />

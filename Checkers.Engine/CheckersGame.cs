@@ -9,6 +9,8 @@ namespace Checkers.Engine
         private readonly IDictionary<PlayerColor, IPlayer> _players;
         private readonly Board _board;
 
+        private bool _gameEnded;
+
         public CheckersGame(IPlayer player1, IPlayer player2)
         {
             _players = new Dictionary<PlayerColor, IPlayer>
@@ -22,6 +24,8 @@ namespace Checkers.Engine
             _board = new Board();
         }
 
+        public PlayerColor Winner => _board.LastPlayer;
+
         public void Start(bool debug = false)
         {
             _board.Initialize();
@@ -32,16 +36,17 @@ namespace Checkers.Engine
                 Debug(debug, nextPlayer);
                 nextPlayer.PerformMove(_board);
             }
-            VisualizeBoard();
-            WaitForPlayerInput();
+            _gameEnded = true;
+            Debug(debug);
         }
 
-        private void Debug(bool debug, IPlayer player)
+        private void Debug(bool debug, IPlayer player = null)
         {
             if (!debug) return;
 
             VisualizeBoard();
-            EchoNextPlayer(player);
+            if (player != null)
+                EchoNextPlayer(player);
             WaitForPlayerInput();
         }
         

@@ -31,19 +31,19 @@ namespace Checkers.Algorithms.MTCS
 
         public int WinCount { get; private set; }
 
-        public int PlaysCount { get; private set; }
+        public int PlayCount { get; private set; }
 
-        public double WinPercentage => (double) WinCount/PlaysCount;
+        public double WinPercentage => (double) WinCount/PlayCount;
 
-        public MTCSNode GetBestPossibleChild(IBoard board, PlayerColor playerColor, int budget, ISelectionStrategy selectionStrategy)
+        public MTCSNode GetBestPossibleChild(IBoard board, PlayerColor activePlayer, int budget, IChildSelectionStrategy childSelectionStrategy)
         {
             _children.Clear();
-            PopulateChildren(board, playerColor);
+            PopulateChildren(board, activePlayer);
 
             for (var i = 0; i < budget; i++)
             {
-                var child = selectionStrategy.Select(_children);
-                child.RunSimulation(board, playerColor);
+                var child = childSelectionStrategy.Select(_children);
+                child.RunSimulation(board, activePlayer);
             }
 
             var bestChild = GetBestChild();
@@ -51,80 +51,67 @@ namespace Checkers.Algorithms.MTCS
             return bestChild;
         }
 
-        private void PopulateChildren(IBoard board, PlayerColor playerColor)
+        private void PopulateChildren(IBoard board, PlayerColor activePlayer)
         {
-            foreach (var action in board.GetValidActionsForPlayer(playerColor))
+            foreach (var action in board.GetValidActionsForPlayer(activePlayer))
             {
                 _children.Add(new MTCSNode(this, action));
             }
         }
 
-        private void RunSimulation(IBoard board, PlayerColor playerColor)
+        private void RunSimulation(IBoard board, PlayerColor activePlayer)
         {
             Action.Perform(board);
+            PlayCount++;
 
             if (board.EndGameConditionsMet)
             {
                 WinCount++;
-                PlaysCount++;
             }
             else
             {
-                var result = RunSimulationInner(board, playerColor);
-                WinCount += result;
-                PlaysCount++;
+                var child = GetRandomChild(board);
+                WinCount += child.RunSimulationInner(board, activePlayer);
             }
-
+            
             Action.Undo(board);
         }
 
-        private int RunSimulationInner(IBoard board, PlayerColor playerColor)
+        private int RunSimulationInner(IBoard board, PlayerColor activePlayer)
         {
-            int result;
+            Action.Perform(board);
+            PlayCount++;
 
-            var opponentsActions = GetOpponentsActions(board, playerColor);
-            
+            int result;
             if (board.EndGameConditionsMet)
             {
-                result = 0;
+                result = board.LastPlayer == activePlayer ? 1 : 0;
             }
             else
             {
-                var action = board.GetValidActionsForPlayer(playerColor).Random();
-                var performedActions = _children.Select(c => c.Action);
-
-                if (!performedActions.Contains(action))
-                    _children.Add(new MTCSNode(this, action));
-
-                action.Perform(board);
-
-                result = board.EndGameConditionsMet ? 1 : RunSimulationInner(board, playerColor);
-
-                action.Undo(board);
+                var child = GetRandomChild(board);
+                result = child.RunSimulationInner(board, activePlayer);
             }
 
-            foreach (var action in opponentsActions.Reverse())
-            {
-                action.Undo(board);
-            }
+            WinCount += result;
+            Action.Undo(board);
             return result;
         }
 
-        private IEnumerable<IAction> GetOpponentsActions(IBoard board, PlayerColor playerColor)
+        private MTCSNode GetRandomChild(IBoard board)
         {
-            var actions = new List<IAction>();
+            var nextPlayer = board.NextPlayer;
 
-            IAction action;
-            do
+            var action = board.GetValidActionsForPlayer(nextPlayer).Random();
+            var child = _children.FirstOrDefault(c => c.Action == action);
+            if (child == null)
             {
-                action = board.GetValidActionsForPlayer(playerColor).Random();
-                actions.Add(action);
-                action.Perform(board);
-            } while (action is JumpAction && !board.EndGameConditionsMet);
-
-            return actions;
+                child = new MTCSNode(this, action);
+                _children.Add(child);
+            }
+            return child;
         }
-
+        
         private MTCSNode GetBestChild()
         {
             return _children.OrderByDescending(c => c.WinPercentage).First();

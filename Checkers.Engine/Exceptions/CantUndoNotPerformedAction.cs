@@ -2,7 +2,7 @@
 
 namespace Checkers.Engine.Exceptions
 {
-    public class CantUndoNotPerformAction : Exception
+    public class CantUndoNotPerformedAction : Exception
     {
     }
 }

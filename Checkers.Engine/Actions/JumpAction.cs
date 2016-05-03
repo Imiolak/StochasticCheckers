@@ -53,13 +53,13 @@ namespace Checkers.Engine.Actions
         public void Undo(IBoard board)
         {
             if (!_wasPerformed)
-                throw new CantUndoNotPerformAction();
+                throw new CantUndoNotPerformedAction();
 
             var destRow = Piece.Row - DeltaRow;
             var destCol = Piece.Column - DeltaColumn;
 
-            var intRow = DeltaRow / 2 + Piece.Row;
-            var intColumn = DeltaColumn / 2 + Piece.Column;
+            var intRow = Piece.Row - DeltaRow / 2;
+            var intColumn = Piece.Column - DeltaColumn / 2;
             
             board.Pieces[Piece.Row][Piece.Column] = null;
             board.Pieces[destRow][destCol] = Piece;

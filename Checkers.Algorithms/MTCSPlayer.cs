@@ -1,8 +1,6 @@
-﻿using System;
-using Checkers.Algorithms.MTCS;
+﻿using Checkers.Algorithms.MTCS;
 using Checkers.Algorithms.MTCS.Strategy;
 using Checkers.Engine;
-using Checkers.Engine.Actions;
 using Checkers.Engine.Display;
 
 namespace Checkers.Algorithms
@@ -11,9 +9,9 @@ namespace Checkers.Algorithms
     {
         private readonly MTCSTree _mtcsTree;
 
-        public MTCSPlayer(ISelectionStrategy selectionStrategy)
+        public MTCSPlayer(IBudgetAssignStrategy budgetAssignStrategy, IChildSelectionStrategy childSelectionStrategy)
         {
-            _mtcsTree = new MTCSTree(Color, selectionStrategy);
+            _mtcsTree = new MTCSTree(Color, budgetAssignStrategy, childSelectionStrategy);
         }
 
         public PlayerColor Color { get; set; }

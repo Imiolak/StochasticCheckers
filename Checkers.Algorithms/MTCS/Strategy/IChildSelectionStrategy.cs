@@ -2,7 +2,7 @@
 
 namespace Checkers.Algorithms.MTCS.Strategy
 {
-    public interface ISelectionStrategy
+    public interface IChildSelectionStrategy
     {
         MTCSNode Select(IEnumerable<MTCSNode> children);
     }

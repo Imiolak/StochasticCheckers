@@ -1,4 +1,6 @@
-﻿using Checkers.Algorithms;
+﻿using System.Collections.Generic;
+using Checkers.Algorithms;
+using Checkers.Algorithms.MTCS.Strategy;
 using Checkers.Engine;
 
 namespace Checkers.Console
@@ -7,13 +9,17 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            //var player1 = new MTCSPlayer(new RandomSelectionStrategy());
-            var player1 = new RandomMovePlayer();
-            var player2 = new RandomMovePlayer();
+            for (var i = 0; i < 20; i++)
+            {
+                var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(10), new RandomChildSelectionStrategy());
+                var player2 = new RandomMovePlayer();
 
-            var game = new CheckersGame(player1, player2);
+                var game = new CheckersGame(player1, player2);
 
-            game.Start(true);
+                game.Start();
+
+                System.Console.WriteLine(game.Winner);
+            }
         }
     }
 }

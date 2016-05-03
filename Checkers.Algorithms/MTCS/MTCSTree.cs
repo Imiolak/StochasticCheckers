@@ -7,24 +7,24 @@ namespace Checkers.Algorithms.MTCS
 {
     public class MTCSTree
     {
-        private const int Budget = 1;
-
         private readonly PlayerColor _playerColor;
-        private readonly ISelectionStrategy _selectionStrategy;
+        private readonly IBudgetAssignStrategy _budgetAssignStrategy;
+        private readonly IChildSelectionStrategy _childSelectionStrategy;
 
         private MTCSNode _root;
 
-        public MTCSTree(PlayerColor playerColor, ISelectionStrategy selectionStrategy)
+        public MTCSTree(PlayerColor playerColor, IBudgetAssignStrategy budgetAssignStrategy, IChildSelectionStrategy childSelectionStrategy)
         {
             _playerColor = playerColor;
-            _selectionStrategy = selectionStrategy;
+            _budgetAssignStrategy = budgetAssignStrategy;
+            _childSelectionStrategy = childSelectionStrategy;
 
             _root = new MTCSNode();
         }
 
         public IAction GetBestPossibleAction(IBoard board)
         {
-            var bestChild = _root.GetBestPossibleChild(board, _playerColor, Budget, _selectionStrategy);
+            var bestChild = _root.GetBestPossibleChild(board, _playerColor, _budgetAssignStrategy.Assign(), _childSelectionStrategy);
             _root = bestChild;
 
             return bestChild.Action;

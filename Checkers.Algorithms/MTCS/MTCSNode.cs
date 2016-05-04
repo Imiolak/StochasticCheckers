@@ -64,7 +64,8 @@ namespace Checkers.Algorithms.MTCS
 
             if (board.EndGameConditionsMet)
             {
-                WinCount++;
+                if (board.GameResult != GameResult.Draw)
+                    WinCount++;
             }
             else
             {
@@ -83,7 +84,12 @@ namespace Checkers.Algorithms.MTCS
             int result;
             if (board.EndGameConditionsMet)
             {
-                result = board.LastPlayer == activePlayer ? 1 : 0;
+                if (board.GameResult == GameResult.WhiteWon && activePlayer == PlayerColor.White)
+                    result = 1;
+                else if (board.GameResult == GameResult.BlackWon && activePlayer == PlayerColor.Black)
+                    result = 1;
+                else
+                    result = 0;
             }
             else
             {

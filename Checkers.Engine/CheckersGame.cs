@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Checkers.Engine.Display;
 
 namespace Checkers.Engine
 {
-    public class CheckersGame
+    public class CheckersGame : IGame
     {
         private readonly IDictionary<PlayerColor, IPlayer> _players;
         private readonly Board _board;
-
-        private bool _gameEnded;
+        private readonly Stopwatch _stopwatch;
 
         public CheckersGame(IPlayer player1, IPlayer player2)
         {
@@ -22,22 +22,36 @@ namespace Checkers.Engine
             player2.Color = PlayerColor.Black;
             
             _board = new Board();
+            _stopwatch = new Stopwatch();
         }
 
-        public PlayerColor Winner => _board.LastPlayer;
+        public GameResult Result => _board.GameResult;
+
+        public TimeSpan TimeElapsed => _stopwatch.Elapsed;
 
         public void Start(bool debug = false)
         {
-            _board.Initialize();
-
+            InitializeGame();
             while (!_board.EndGameConditionsMet)
             {
                 var nextPlayer = _players[_board.NextPlayer];
                 Debug(debug, nextPlayer);
                 nextPlayer.PerformMove(_board);
             }
-            _gameEnded = true;
+            WrapupGame();
             Debug(debug);
+        }
+        
+        private void InitializeGame()
+        {
+            _board.Initialize();
+            _stopwatch.Start();
+        }
+
+        private void WrapupGame()
+        {
+            _stopwatch.Stop();
+            Console.WriteLine("Game ended..");
         }
 
         private void Debug(bool debug, IPlayer player = null)

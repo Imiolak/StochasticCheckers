@@ -9,9 +9,31 @@ namespace Checkers.Engine.Display
     {
         public int BoardSize => 8;
 
-        public bool EndGameConditionsMet => !GetPiecesForPlayer(PlayerColor.Black).Any() ||
-            !GetPiecesForPlayer(PlayerColor.White).Any();
+        public bool EndGameConditionsMet
+        {
+            get
+            {
+                if (!GetPiecesForPlayer(PlayerColor.Black).Any())
+                {
+                    GameResult = GameResult.WhiteWon;
+                    return true;
+                }
+                if (!GetPiecesForPlayer(PlayerColor.White).Any())
+                {
+                    GameResult = GameResult.BlackWon;
+                    return true;
+                }
+                if (!GetValidActionsForPlayer(PlayerColor.White).Any() || !GetValidActionsForPlayer(PlayerColor.Black).Any())
+                {
+                    GameResult = GameResult.Draw;
+                    return true;
+                }
+                return false;
+            }
+        }
 
+        public GameResult GameResult { get; private set; }
+        
         public IPiece[][] Pieces { get; private set; }
 
         public PlayerColor LastPlayer { get; set; } = PlayerUtils.StartingPlayer();

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq.Expressions;
 using Checkers.Algorithms;
 using Checkers.Algorithms.MTCS.Strategy;
-using Checkers.Engine;
+using Checkers.Engine.Display;
+using Checkers.Experiment;
+using Checkers.Experiment.Measurement;
 
 namespace Checkers.Console
 {
@@ -10,17 +11,31 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            for (var i = 0; i < 20; i++)
+            var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(10), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
+            var player2 = new RandomMovePlayer();
+            var measurements = new List<IMeasurement>
             {
-                var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(10), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
-                var player2 = new RandomMovePlayer();
+                new GameEndedWithResultMeasurement(GameResult.WhiteWon),
+                new GameEndedWithResultMeasurement(GameResult.Draw),
+                new GameEndedWithResultMeasurement(GameResult.BlackWon),
+                new AverageTimeToFinishGameMeasurement()
+            };
 
-                var game = new CheckersGame(player1, player2);
+            var experiment = new MtcsVsRandomExperiment
+            {
+                IndependentGameRunes = 50,
+                Player1 = player1,
+                Player2 = player2,
+                Measurements = measurements
+            };
 
-                game.Start();
+            experiment.Perform();
 
-                System.Console.WriteLine(game.Winner);
+            foreach (var measurement in measurements)
+            {
+                System.Console.WriteLine($"{measurement.Description} {measurement.Result}");
             }
+            System.Console.ReadKey();
         }
     }
 }

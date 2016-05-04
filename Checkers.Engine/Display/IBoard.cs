@@ -7,6 +7,7 @@ namespace Checkers.Engine.Display
     {
         int BoardSize { get; }
         bool EndGameConditionsMet { get; }
+        GameResult GameResult { get; }
         IPiece[][] Pieces { get; }
         PlayerColor LastPlayer { get; set; }
         PlayerColor NextPlayer { get; }
@@ -14,5 +15,12 @@ namespace Checkers.Engine.Display
 
         IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor);
         IEnumerable<IAction> GetValidActionsForPlayer(PlayerColor playerColor);
+    }
+
+    public enum GameResult
+    {
+        WhiteWon,
+        Draw,
+        BlackWon
     }
 }

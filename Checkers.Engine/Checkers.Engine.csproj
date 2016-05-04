@@ -73,6 +73,7 @@
     <Compile Include="Exceptions\NoPieceToJumpOverException.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Actions\IAction.cs" />
+    <Compile Include="IGame.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="PlayerUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

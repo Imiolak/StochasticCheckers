@@ -42,19 +42,5 @@ namespace Checkers.Engine.Tests.Display
 
             board.NextPlayer.Should().Be(PlayerUtils.NextPlayer(player));
         }
-
-        [Fact]
-        public void SamePlayerShouldTakeActionAfterHeJumped()
-        {
-            const PlayerColor player = PlayerColor.Black;
-
-            var board = new Board
-            {
-                LastPlayer = player,
-                WasLastActionJump = true
-            };
-
-            board.NextPlayer.Should().Be(player);
-        }
     }
 }

@@ -46,6 +46,7 @@ namespace Checkers.Engine.Actions
             Piece.Column = destCol;
 
             board.LastPlayer = Piece.Color;
+            board.LastAction = this;
             board.WasLastActionJump = true;
             _wasPerformed = true;
         }

@@ -7,25 +7,22 @@ namespace Checkers.Engine.Display
 {
     public class Board : IBoard
     {
+        private bool _gameStarted = false;
+
         public int BoardSize => 8;
 
         public bool EndGameConditionsMet
         {
             get
             {
-                if (!GetPiecesForPlayer(PlayerColor.Black).Any())
+                if (!GetValidActionsForPlayer(PlayerColor.Black).Any())
                 {
                     GameResult = GameResult.WhiteWon;
                     return true;
                 }
-                if (!GetPiecesForPlayer(PlayerColor.White).Any())
+                if (!GetValidActionsForPlayer(PlayerColor.White).Any())
                 {
                     GameResult = GameResult.BlackWon;
-                    return true;
-                }
-                if (!GetValidActionsForPlayer(PlayerColor.White).Any() || !GetValidActionsForPlayer(PlayerColor.Black).Any())
-                {
-                    GameResult = GameResult.Draw;
                     return true;
                 }
                 return false;
@@ -36,11 +33,28 @@ namespace Checkers.Engine.Display
         
         public IPiece[][] Pieces { get; private set; }
 
-        public PlayerColor LastPlayer { get; set; } = PlayerUtils.StartingPlayer();
+        public PlayerColor LastPlayer { get; set; }
 
-        public PlayerColor NextPlayer => WasLastActionJump ? LastPlayer : PlayerUtils.NextPlayer(LastPlayer);
+        public PlayerColor NextPlayer
+        {
+            get
+            {
+                if (!_gameStarted)
+                {
+                    _gameStarted = true;
+                    return PlayerUtils.StartingPlayer();
+                }
+                if (WasLastActionJump && LastAction.Piece.GetPossibleJumps(this).Any())
+                {
+                    return LastPlayer;
+                }
+                return PlayerUtils.NextPlayer(LastPlayer);
+            }
+        }
 
-        public bool WasLastActionJump { get; set; } = true;
+        public IAction LastAction { get; set; }
+
+        public bool WasLastActionJump { get; set; }
         
         public void Initialize()
         {
@@ -65,6 +79,13 @@ namespace Checkers.Engine.Display
 
         public IEnumerable<IAction> GetValidActionsForPlayer(PlayerColor playerColor)
         {
+            if (WasLastActionJump)
+            {
+                var nextPossibleJumps = LastAction.Piece.GetPossibleJumps(this).ToArray();
+                if (nextPossibleJumps.Any())
+                    return nextPossibleJumps;
+            }
+
             var pieces = GetJumpablePiecesForPlayer(playerColor);
 
             var pieceArray = pieces as Piece[] ?? pieces.ToArray();

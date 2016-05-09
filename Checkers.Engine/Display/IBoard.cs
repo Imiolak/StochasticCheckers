@@ -11,6 +11,7 @@ namespace Checkers.Engine.Display
         IPiece[][] Pieces { get; }
         PlayerColor LastPlayer { get; set; }
         PlayerColor NextPlayer { get; }
+        IAction LastAction { get; set; }
         bool WasLastActionJump { get; set; }
 
         IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor);
@@ -20,7 +21,6 @@ namespace Checkers.Engine.Display
     public enum GameResult
     {
         WhiteWon,
-        Draw,
         BlackWon
     }
 }

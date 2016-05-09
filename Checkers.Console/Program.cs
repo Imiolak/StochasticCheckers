@@ -11,12 +11,11 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(30), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
-            var player2 = new UserInputPlayer();
+            var player2 = new MTCSPlayer(new StaticBudgetAssignStrategy(150), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
+            var player1 = new UserInputPlayer();
             var measurements = new List<IMeasurement>
             {
                 new GameEndedWithResultMeasurement(GameResult.WhiteWon),
-                new GameEndedWithResultMeasurement(GameResult.Draw),
                 new GameEndedWithResultMeasurement(GameResult.BlackWon),
                 new AverageTimeToFinishGameMeasurement()
             };

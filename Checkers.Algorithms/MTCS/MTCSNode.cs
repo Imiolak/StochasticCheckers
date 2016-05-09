@@ -64,8 +64,7 @@ namespace Checkers.Algorithms.MTCS
 
             if (board.EndGameConditionsMet)
             {
-                if (board.GameResult != GameResult.Draw)
-                    WinCount++;
+                WinCount++;
             }
             else
             {

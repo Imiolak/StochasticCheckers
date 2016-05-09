@@ -16,7 +16,7 @@ namespace Checkers.Experiment
             for (var i = 0; i < IndependentGameRunes; i++)
             {
                 var game = new CheckersGame(Player1, Player2);
-                game.Start();
+                game.Start(true);
 
                 foreach (var mesurement in Measurements)
                 {

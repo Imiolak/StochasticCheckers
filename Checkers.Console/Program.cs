@@ -11,8 +11,8 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(10), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
-            var player2 = new RandomMovePlayer();
+            var player1 = new MTCSPlayer(new StaticBudgetAssignStrategy(30), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
+            var player2 = new UserInputPlayer();
             var measurements = new List<IMeasurement>
             {
                 new GameEndedWithResultMeasurement(GameResult.WhiteWon),
@@ -23,7 +23,7 @@ namespace Checkers.Console
 
             var experiment = new MtcsVsRandomExperiment
             {
-                IndependentGameRunes = 50,
+                IndependentGameRunes = 1,
                 Player1 = player1,
                 Player2 = player2,
                 Measurements = measurements

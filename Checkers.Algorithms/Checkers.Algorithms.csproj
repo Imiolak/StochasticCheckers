@@ -50,6 +50,7 @@
     <Compile Include="MTCS\Strategy\WinPercentageChildSelectionStrategy.cs" />
     <Compile Include="RandomMovePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInputPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Checkers.Engine\Checkers.Engine.csproj">

@@ -221,11 +221,14 @@ namespace Checkers.Engine.Display
 
         private string GetBoardStringRepresentation()
         {
+            var rowLetter = 'H';
+
             var sb = new StringBuilder();
             for (var row = BoardSize - 1; row >= 0; row--)
             {
                 if (row == BoardSize - 1)
-                    sb.AppendLine("---|---|---|---|---|---|---|---");
+                    sb.AppendLine("   |---|---|---|---|---|---|---|---|");
+                sb.Append($" {rowLetter--} |"); 
                 for (var column = 0; column < BoardSize; column++)
                 {
                     string rep;
@@ -235,12 +238,14 @@ namespace Checkers.Engine.Display
                     else
                         rep = Pieces[row][column].Color == PlayerColor.White ? " W " : " B ";
                     sb.Append(rep);
-                    if (column < BoardSize - 1)
-                        sb.Append("|");
+                    sb.Append("|");
                 }
                 sb.AppendLine();
-                sb.AppendLine("---|---|---|---|---|---|---|---");
+                sb.AppendLine("   |---|---|---|---|---|---|---|---|");
             }
+            sb.Append("    ");
+            for (var i = 1; i <= 8; i++)
+                sb.Append(string.Format($" {i}  "));
             return sb.ToString();
         }
         #endregion

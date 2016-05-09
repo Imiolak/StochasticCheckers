@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Actions\ActionFactory.cs" />
     <Compile Include="Actions\JumpAction.cs" />
     <Compile Include="Actions\MoveAction.cs" />
     <Compile Include="CheckersGame.cs" />

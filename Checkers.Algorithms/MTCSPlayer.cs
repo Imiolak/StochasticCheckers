@@ -16,7 +16,7 @@ namespace Checkers.Algorithms
 
         public PlayerColor Color { get; set; }
 
-        public void PerformMove(Board board)
+        public void PerformMove(IBoard board)
         {
             var action = _mtcsTree.GetBestPossibleAction(board);
             action.Perform(board);

@@ -22,6 +22,11 @@ namespace Checkers.Algorithms
 
         public PlayerColor Color { get; set; }
 
+        public MTCSTree GetTree()
+        {
+            return _mtcsTree;
+        }
+
         public void PerformMove(IBoard board)
         {
             if (_mtcsTree == null)

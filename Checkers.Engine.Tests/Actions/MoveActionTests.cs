@@ -153,5 +153,24 @@ namespace Checkers.Engine.Tests.Actions
             board.LastPlayer.Should().Be(piece.Color);
             board.WasLastActionJump.Should().BeFalse();
         }
+
+        [Fact]
+        public void ToStringShouldReturnActionRepresentation()
+        {
+            const int row = 4;
+            const int column = 4;
+            const int deltaRow = 1;
+            const int deltaColumn = -1;
+
+            var piece = Substitute.For<IPiece>();
+            piece.Row.Returns(row);
+            piece.Column.Returns(column);
+            piece.Color.Returns(PlayerColor.White);
+
+            var action = new MoveAction(piece, deltaRow, deltaColumn);
+            var repr = action.ToString();
+
+            repr.Should().Be("White 44 53");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Checkers.Algorithms;
 using Checkers.Algorithms.MTCS.Strategy;
 using Checkers.Engine.Display;
@@ -11,8 +12,10 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            var player2 = new MTCSPlayer(new StaticBudgetAssignStrategy(150), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
-            var player1 = new UserInputPlayer();
+            System.Console.WriteLine(Directory.GetCurrentDirectory());
+
+            var mtcsPlayer = new MTCSPlayer(new StaticBudgetAssignStrategy(20), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
+            var otherPlayer = new RandomMovePlayer();
             var measurements = new List<IMeasurement>
             {
                 new GameEndedWithResultMeasurement(GameResult.WhiteWon),
@@ -20,11 +23,12 @@ namespace Checkers.Console
                 new AverageTimeToFinishGameMeasurement()
             };
 
-            var experiment = new MtcsVsRandomExperiment
+            var experiment = new MtcsVsOtherExperiment
             {
                 IndependentGameRunes = 1,
-                Player1 = player1,
-                Player2 = player2,
+                MtcsPlayer = mtcsPlayer,
+                OtherPlayer = otherPlayer,
+                MtcsPlayerPosition = 1,
                 Measurements = measurements
             };
 

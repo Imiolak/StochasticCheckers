@@ -43,6 +43,10 @@
     <Compile Include="MTCSPlayer.cs" />
     <Compile Include="MTCS\MTCSNode.cs" />
     <Compile Include="MTCS\MTCSTree.cs" />
+    <Compile Include="MTCS\Output\BottomUpParser.cs" />
+    <Compile Include="MTCS\Output\ITreeParser.cs" />
+    <Compile Include="MTCS\Output\FileTreeOutput.cs" />
+    <Compile Include="MTCS\Output\TreeOutputBase.cs" />
     <Compile Include="MTCS\Strategy\IBudgetAssignStrategy.cs" />
     <Compile Include="MTCS\Strategy\IChildSelectionStrategy.cs" />
     <Compile Include="MTCS\Strategy\RandomChildSelectionStrategy.cs" />

@@ -43,7 +43,7 @@
     <Compile Include="Measurement\AverageTimeToFinishGameMeasurement.cs" />
     <Compile Include="Measurement\GameEndedWithResultMeasurement.cs" />
     <Compile Include="Measurement\IMeasurement.cs" />
-    <Compile Include="MtcsVsRandomExperiment.cs" />
+    <Compile Include="MtcsVsOtherExperiment.cs" />
     <Compile Include="IExperiment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

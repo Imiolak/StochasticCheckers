@@ -184,5 +184,24 @@ namespace Checkers.Engine.Tests.Actions
             board.Pieces[intRow][intColumn].Should().Be(beatenPiece);
             board.Pieces[row + deltaRow][column + deltaColumn].Should().BeNull();
         }
+
+        [Fact]
+        public void ToStringShouldReturnActionRepresentation()
+        {
+            const int row = 4;
+            const int column = 4;
+            const int deltaRow = 2;
+            const int deltaColumn = -2;
+
+            var piece = Substitute.For<IPiece>();
+            piece.Row.Returns(row);
+            piece.Column.Returns(column);
+            piece.Color.Returns(PlayerColor.White);
+
+            var action = new JumpAction(piece, deltaRow, deltaColumn);
+            var repr = action.ToString();
+
+            repr.Should().Be("White 44 62");
+        }
     }
 }

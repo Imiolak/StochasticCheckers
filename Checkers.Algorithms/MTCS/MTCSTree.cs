@@ -12,7 +12,7 @@ namespace Checkers.Algorithms.MTCS
         private readonly IChildSelectionStrategy _simulationChildSelectionStrategy;
         private readonly IChildSelectionStrategy _bestChildSelectionStrategy;
 
-        private MTCSNode _root;
+        private  MTCSNode _root;
 
         public MTCSTree(PlayerColor playerColor, IBudgetAssignStrategy budgetAssignStrategy, 
             IChildSelectionStrategy simulationChildSelectionStrategy, IChildSelectionStrategy bestChildSelectionStrategy)
@@ -24,6 +24,8 @@ namespace Checkers.Algorithms.MTCS
 
             _root = new MTCSNode();
         }
+
+        public MTCSNode LastActionNode => _root;
 
         public IAction GetBestPossibleAction(IBoard board)
         {

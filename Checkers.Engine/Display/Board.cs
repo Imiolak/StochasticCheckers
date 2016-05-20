@@ -9,6 +9,9 @@ namespace Checkers.Engine.Display
     {
         private bool _gameStarted = false;
 
+        private List<IAction> _previousPlayersActions;
+        private IAction _lastAction;
+
         public int BoardSize => 8;
 
         public bool EndGameConditionsMet
@@ -51,14 +54,28 @@ namespace Checkers.Engine.Display
                 return PlayerUtils.NextPlayer(LastPlayer);
             }
         }
+        
+        public IAction LastAction
+        {
+            get { return _lastAction; }
+            set
+            {
+                if (_previousPlayersActions.Any() && _previousPlayersActions.First().Piece.Color != value.Piece.Color)
+                    _previousPlayersActions.Clear();
 
-        public IAction LastAction { get; set; }
+                _previousPlayersActions.Add(value);
+                _lastAction = value;
+            }
+        }
+
+        public IEnumerable<IAction> PreviousPlayersActions => _previousPlayersActions.AsEnumerable();
 
         public bool WasLastActionJump { get; set; }
         
         public void Initialize()
         {
             Pieces = InitializeBoard();
+            _previousPlayersActions = new List<IAction>();
         }
 
         public IEnumerable<IPiece> GetPiecesForPlayer(PlayerColor playerColor)

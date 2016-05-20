@@ -12,9 +12,7 @@ namespace Checkers.Console
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine(Directory.GetCurrentDirectory());
-
-            var mtcsPlayer = new MTCSPlayer(new StaticBudgetAssignStrategy(20), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
+            var mtcsPlayer = new MTCSPlayer(new StaticBudgetAssignStrategy(50), new RandomChildSelectionStrategy(), new WinPercentageChildSelectionStrategy());
             var otherPlayer = new RandomMovePlayer();
             var measurements = new List<IMeasurement>
             {
@@ -25,7 +23,7 @@ namespace Checkers.Console
 
             var experiment = new MtcsVsOtherExperiment
             {
-                IndependentGameRunes = 1,
+                IndependentGameRunes = 5,
                 MtcsPlayer = mtcsPlayer,
                 OtherPlayer = otherPlayer,
                 MtcsPlayerPosition = 1,
@@ -34,10 +32,7 @@ namespace Checkers.Console
 
             experiment.Perform();
 
-            foreach (var measurement in measurements)
-            {
-                System.Console.WriteLine($"{measurement.Description} {measurement.Result}");
-            }
+            System.Console.WriteLine("Done, press any key to exit.");
             System.Console.ReadKey();
         }
     }

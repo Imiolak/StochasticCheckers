@@ -11,6 +11,7 @@ namespace Checkers.Engine.Display
         IPiece[][] Pieces { get; }
         PlayerColor LastPlayer { get; set; }
         PlayerColor NextPlayer { get; }
+        IEnumerable<IAction> PreviousPlayersActions { get; }
         IAction LastAction { get; set; }
         bool WasLastActionJump { get; set; }
 

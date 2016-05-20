@@ -1,6 +1,7 @@
 ﻿using System.IO;
+using Checkers.Algorithms.MTCS;
 
-namespace Checkers.Algorithms.MTCS.Output
+namespace Checkers.Experiment.Output
 {
     public class FileTreeOutput : TreeOutputBase
     {

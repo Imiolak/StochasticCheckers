@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Checkers.Algorithms.MTCS;
 
-namespace Checkers.Algorithms.MTCS.Output
+namespace Checkers.Experiment.Output
 {
     public interface ITreeParser
     {

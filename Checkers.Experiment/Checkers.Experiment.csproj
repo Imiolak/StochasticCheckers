@@ -45,6 +45,12 @@
     <Compile Include="Measurement\IMeasurement.cs" />
     <Compile Include="MtcsVsOtherExperiment.cs" />
     <Compile Include="IExperiment.cs" />
+    <Compile Include="Output\BottomUpParser.cs" />
+    <Compile Include="Output\FileMeasurementsOutput.cs" />
+    <Compile Include="Output\FileTreeOutput.cs" />
+    <Compile Include="Output\IMeasurementsOutput.cs" />
+    <Compile Include="Output\ITreeParser.cs" />
+    <Compile Include="Output\TreeOutputBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

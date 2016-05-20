@@ -1,4 +1,6 @@
-﻿namespace Checkers.Algorithms.MTCS.Output
+﻿using Checkers.Algorithms.MTCS;
+
+namespace Checkers.Experiment.Output
 {
     public abstract class TreeOutputBase
     {

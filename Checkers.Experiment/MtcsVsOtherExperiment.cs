@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Checkers.Algorithms;
-using Checkers.Algorithms.MTCS.Output;
 using Checkers.Engine;
 using Checkers.Experiment.Measurement;
+using Checkers.Experiment.Output;
+using BottomUpParser = Checkers.Experiment.Output.BottomUpParser;
+using FileTreeOutput = Checkers.Experiment.Output.FileTreeOutput;
 
 namespace Checkers.Experiment
 {
@@ -18,6 +19,8 @@ namespace Checkers.Experiment
 
         public void Perform()
         {
+            var pathToResultsFolder = "..\\..\\..\\Results\\" + DateTime.Now.ToString("yyyyMMdd HHmmss");
+
             for (var i = 0; i < IndependentGameRunes; i++)
             {
                 var game = MtcsPlayerPosition == 1
@@ -30,13 +33,15 @@ namespace Checkers.Experiment
                 {
                     mesurement.AddEntry(game);
                 }
-
-                var pathToResults = "..\\..\\..\\Results\\";
-                var filename = DateTime.Now.ToString("yyyyMMdd HHmmss") + "\\history";
-                var output = new FileTreeOutput(pathToResults + filename, new BottomUpParser());
-
-                output.Write(MtcsPlayer.GetTree());
+                
+                var historyFilePath = pathToResultsFolder + $"\\history{i}.txt";
+                var treeOutput = new FileTreeOutput(historyFilePath, new BottomUpParser());
+                treeOutput.Write(MtcsPlayer.GetTree());
             }
+
+            var measurementsFilePath = pathToResultsFolder + "\\measurements.txt";
+            var measurementsOutput = new FileMeasurementsOutput(measurementsFilePath);
+            measurementsOutput.Write(Measurements);
         }
     }
 }

@@ -37,7 +37,6 @@ namespace Checkers.Algorithms.MTCS
 
         public MTCSNode GetBestPossibleChild(IBoard board, PlayerColor activePlayer, int budget, IChildSelectionStrategy childSelectionStrategy, IChildSelectionStrategy bestChildSelectionStrategy)
         {
-            _children.Clear();
             PopulateChildren(board, activePlayer);
 
             for (var i = 0; i < budget; i++)
@@ -49,9 +48,25 @@ namespace Checkers.Algorithms.MTCS
             return bestChildSelectionStrategy.Select(_children);
         }
 
+        public MTCSNode ProceedToNext(IAction action)
+        {
+            var potentialExisting = _children.FirstOrDefault(c => c.Action == action);
+
+            if (potentialExisting == null)
+            {
+                potentialExisting = new MTCSNode(this, action);
+                _children.Add(potentialExisting);
+            }
+
+            return potentialExisting;
+        }
+
+        #region Private Methods
         private void PopulateChildren(IBoard board, PlayerColor activePlayer)
         {
-            foreach (var action in board.GetValidActionsForPlayer(activePlayer))
+            var alreadyExistingActions = _children.Select(c => Action).ToList();
+
+            foreach (var action in board.GetValidActionsForPlayer(activePlayer).Where(a => !alreadyExistingActions.Contains(a)))
             {
                 _children.Add(new MTCSNode(this, action));
             }
@@ -119,5 +134,6 @@ namespace Checkers.Algorithms.MTCS
         {
             return _children.OrderByDescending(c => c.WinPercentage).First();
         }
+        #endregion
     }
 }

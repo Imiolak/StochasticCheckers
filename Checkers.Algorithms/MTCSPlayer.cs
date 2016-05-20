@@ -1,4 +1,5 @@
-﻿using Checkers.Algorithms.MTCS;
+﻿using System.Linq;
+using Checkers.Algorithms.MTCS;
 using Checkers.Algorithms.MTCS.Strategy;
 using Checkers.Engine;
 using Checkers.Engine.Display;
@@ -32,6 +33,12 @@ namespace Checkers.Algorithms
             if (_mtcsTree == null)
                 _mtcsTree = new MTCSTree(Color, _budgetAssignStrategy, _simulationChildSelectionStrategy, _bestChildSelectionStrategy);
 
+            var previousPlayersActionsList = board.PreviousPlayersActions.ToList();
+            if (previousPlayersActionsList.Any() && previousPlayersActionsList.First().Piece.Color != Color)
+            {
+                _mtcsTree.ConsiderPreviousPlayerActions(previousPlayersActionsList);
+            }
+            
             var action = _mtcsTree.GetBestPossibleAction(board);
             action.Perform(board);
         }
